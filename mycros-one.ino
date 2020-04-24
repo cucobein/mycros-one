@@ -1,22 +1,26 @@
 
 #define SWITCH_IN 2
 #define SWITCH_OUT 3
-#define PUMP 13
-#define DEBOUNCE_DELAY 50 // Miliseconds
-#define PUMP_TIME 3 // Seconds
+#define PUMP 4
+#define LEDS 5
+
+#define DEBOUNCE_DELAY 100      // Miliseconds
+#define PUMP_TIME 5             // Seconds
 #define IDLE_STATE        0
 #define PUMP_OPEN_STATE   1
 
-float timerValue = 62500; // 16MHz-256-1Hz
+float timerValue = 62500;       // 16MHz-256-1Hz
 float timerCount = 0;
 float pumpTimeCounter = 0;
 float currentState = IDLE_STATE;
 
 void setup() {
   pinMode(PUMP, OUTPUT);
+  pinMode(LEDS, OUTPUT);
   pinMode(SWITCH_IN, INPUT_PULLUP);
   pinMode(SWITCH_OUT, INPUT_PULLUP);
-  digitalWrite(LED_BUILTIN, LOW);
+  digitalWrite(PUMP, LOW);
+  digitalWrite(LEDS, HIGH);
   attachInterrupt(digitalPinToInterrupt(SWITCH_IN), switchInPressed, FALLING);
   attachInterrupt(digitalPinToInterrupt(SWITCH_OUT), switchOutPressed, FALLING);
 
@@ -30,9 +34,7 @@ void setup() {
   interrupts(); 
 
   Serial.begin(115200);
-  while (!Serial) {
-    ; // wait for serial port to connect. Needed for Native USB only
-  }
+  while (!Serial) { ; }
 }
 
 void switchInPressed() {
@@ -70,12 +72,14 @@ void stopTimer() {
 void turnOnPump() {
   if(digitalRead(PUMP) != HIGH) {
     digitalWrite(PUMP, HIGH); 
+    digitalWrite(LEDS, LOW);
   }
 }
 
 void turnOffPump() {
   if(digitalRead(PUMP) != LOW) {
-    digitalWrite(PUMP, LOW); 
+    digitalWrite(PUMP, LOW);
+    digitalWrite(LEDS, HIGH); 
   }
 }
 
@@ -95,4 +99,5 @@ void loop() {
       turnOnPump();
     }
   }
+  delay(1);
 }
