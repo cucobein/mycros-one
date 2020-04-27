@@ -1,7 +1,7 @@
 #define NO_SWITCH_PRESSED     0
 #define SWITCH_IN             2
 #define SWITCH_OUT            3
-#define PUMP                  13
+#define PUMP                  4
 #define LEDS                  5
 
 #define DEBOUNCE_DELAY        100     // Miliseconds
