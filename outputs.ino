@@ -1,5 +1,5 @@
 #define PUMP                      4
-#define LEDS                      13
+#define LEDS                      5
 
 void turnOnPump() {
   if (digitalRead(PUMP) != HIGH) {
