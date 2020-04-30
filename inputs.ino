@@ -1,6 +1,7 @@
 #define NO_SWITCH_PRESSED           0
-#define POLLING_DEBOUNCE_DELAY      1
-#define POLLING_DEBOUNCE_THRESHOLD  30
+#define POLLING_DEBOUNCE_DELAY      1       // Miliseconds
+#define POLLING_DEBOUNCE_THRESHOLD  30      // Miliseconds
+#define CARPET_DEBOUNCE_DELAY       100     // Miliseconds
 #define SWITCH_IN                   2
 #define SWITCH_OUT                  3
 #define SWITCH_IN_ENABLE_BUTTON     6
@@ -49,16 +50,25 @@ ISR(TIMER1_COMPA_vect)
 void switchInPressed() {
   noInterrupts();
   delay(CARPET_DEBOUNCE_DELAY);
-  if (digitalRead(SWITCH_IN) == LOW) {
-    if (bothWaysEnabled == 1) {
-      startTimer();
-      currentState = PUMP_OPEN_STATE;
-    } else {
-      if (switchPreviouslyPressed == NO_SWITCH_PRESSED || switchPreviouslyPressed == SWITCH_IN) {
-        startTimer();
-        switchPreviouslyPressed = SWITCH_IN;
-        currentState = PUMP_OPEN_STATE;
-      }
+  if(digitalRead(SWITCH_IN) == LOW) {
+    switch(configuration) {
+      case NONE:
+        return;
+      case BOTH_ENTRANCES:
+        goToPumpOpenState();
+        return;
+      case ENTRANCE_IN:
+        if(switchPreviouslyPressed == NO_SWITCH_PRESSED || switchPreviouslyPressed == SWITCH_IN) {
+          switchPreviouslyPressed = SWITCH_IN;
+          goToPumpOpenState();
+        }
+        return;
+      case ENTRANCE_OUT:
+        if(switchPreviouslyPressed == NO_SWITCH_PRESSED || switchPreviouslyPressed == SWITCH_IN) {
+          switchPreviouslyPressed = SWITCH_IN;
+          goToPumpDisabledState();
+        }
+      return;
     }
   }
   interrupts();
@@ -67,19 +77,38 @@ void switchInPressed() {
 void switchOutPressed() {
   noInterrupts();
   delay(CARPET_DEBOUNCE_DELAY);
-  if (digitalRead(SWITCH_OUT) == LOW) {
-    if (bothWaysEnabled == 1) {
-      startTimer();
-      currentState = PUMP_OPEN_STATE;
-    } else {
-      if (switchPreviouslyPressed == NO_SWITCH_PRESSED || switchPreviouslyPressed == SWITCH_OUT) {
-        startTimer();
-        switchPreviouslyPressed = SWITCH_OUT;
-        currentState = PUMP_DISABLED_STATE;
-      }
+  if(digitalRead(SWITCH_OUT) == LOW) {
+    switch(configuration) {
+      case NONE:
+        return;
+      case BOTH_ENTRANCES:
+        goToPumpOpenState();
+        return;
+      case ENTRANCE_IN:
+        if (switchPreviouslyPressed == NO_SWITCH_PRESSED || switchPreviouslyPressed == SWITCH_OUT) {
+          switchPreviouslyPressed = SWITCH_OUT;
+          goToPumpDisabledState();
+        }
+        return;
+      case ENTRANCE_OUT:
+        if(switchPreviouslyPressed == NO_SWITCH_PRESSED || switchPreviouslyPressed == SWITCH_OUT) {
+          switchPreviouslyPressed = SWITCH_OUT;
+          goToPumpOpenState();
+        }
+        return;
     }
   }
   interrupts();
+}
+
+void goToPumpOpenState() {
+  startTimer();
+  currentState = PUMP_OPEN_STATE;
+}
+
+void goToPumpDisabledState() {
+  startTimer();
+  currentState = PUMP_DISABLED_STATE;
 }
 
 void pollConfiguration() {
