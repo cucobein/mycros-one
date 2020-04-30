@@ -15,6 +15,7 @@ unsigned char switchPreviouslyPressed = NO_SWITCH_PRESSED;
 unsigned char bothWaysEnabled = 0;
 
 void loop() {  
+  pollConfiguration();
   if (currentState == IDLE_STATE) {
     turnOffPump();
   } 

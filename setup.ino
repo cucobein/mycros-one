@@ -3,6 +3,10 @@ void setup() {
   pinMode(LEDS, OUTPUT);
   pinMode(SWITCH_IN, INPUT_PULLUP);
   pinMode(SWITCH_OUT, INPUT_PULLUP);
+  pinMode(SWITCH_IN_ENABLE_BUTTON, INPUT_PULLUP);
+  pinMode(SWITCH_OUT_ENABLE_BUTTON, INPUT_PULLUP);
+  pinMode(SWITCH_IN_LED, OUTPUT);
+  pinMode(SWITCH_OUT_LED, OUTPUT);
   digitalWrite(PUMP, LOW);
   digitalWrite(LEDS, HIGH);
   attachInterrupt(digitalPinToInterrupt(SWITCH_IN), switchInPressed, FALLING);
