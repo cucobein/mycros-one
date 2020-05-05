@@ -2,7 +2,7 @@
 #define NO_SWITCH_PRESSED         0
 #define PUMP_OPEN_TIME            10        // Seconds
 #define PUMP_DISABLED_TIME        5         // Seconds
-#define EXTRACTOR_FAN_OPEN_TIME   244 * 20  //  1/244 Seconds
+#define EXTRACTOR_FAN_OPEN_TIME   244 * 80  //  1/244 Seconds
 #define IDLE_STATE                0
 #define PUMP_OPEN_STATE           1
 #define PUMP_DISABLED_STATE       2

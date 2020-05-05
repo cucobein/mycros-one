@@ -1,6 +1,6 @@
 #define PUMP                      4
 #define LEDS                      5
-#define FANS                       10
+#define FANS                      10
 
 void startPumpTimer() {
   TCNT1  = 0;
