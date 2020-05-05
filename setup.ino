@@ -1,6 +1,7 @@
 void setup() {
   pinMode(PUMP, OUTPUT);
   pinMode(LEDS, OUTPUT);
+  pinMode(FANS, OUTPUT);
   pinMode(SWITCH_IN, INPUT_PULLUP);
   pinMode(SWITCH_OUT, INPUT_PULLUP);
   pinMode(SWITCH_IN_ENABLE_BUTTON, INPUT_PULLUP);
@@ -9,6 +10,7 @@ void setup() {
   pinMode(SWITCH_OUT_LED, OUTPUT);
   digitalWrite(PUMP, LOW);
   digitalWrite(LEDS, HIGH);
+  digitalWrite(FANS, LOW);
   attachInterrupt(digitalPinToInterrupt(SWITCH_IN), switchInPressed, FALLING);
   attachInterrupt(digitalPinToInterrupt(SWITCH_OUT), switchOutPressed, FALLING);
 
@@ -19,6 +21,12 @@ void setup() {
   OCR1A = TIMER_SETUP_VALUE;
   TCCR1B |= (1 << WGM12);   // CTC mode
   TCCR1B |= (1 << CS12);    // 256 prescaler
+  TCCR2A  = 0;
+  TCCR2B  = 0;
+  TCNT2   = 0;
+  OCR2A   = 255;
+  TCCR2B |= (1 << WGM12);   // CTC mode
+  TCCR2B |= (1 << CS12);    // 256 prescaler
   interrupts();
 
   Serial.begin(115200);

@@ -24,26 +24,21 @@ typedef struct configuration_button {
 configuration_button switchInEnableButton = { 0, LOW };
 configuration_button switchOutEnableButton = { 0, LOW };
 
-void startTimer() {
-  TCNT1  = 0;
-  TIMSK1 |= (1 << OCIE1A);
-  pumpOpenTimeCounter = 0;
-  pumpDisabledTimeCounter = 0;
-}
-
-void stopTimer() {
-  TCNT1  = 0;
-  TIMSK1 &= ~(1 << OCIE1A);
-  pumpOpenTimeCounter = 0;
-  pumpDisabledTimeCounter = 0;
-}
-
 ISR(TIMER1_COMPA_vect)
 {
   if (currentState == PUMP_OPEN_STATE) {
     pumpOpenTimeCounter++;
   } else if (currentState == PUMP_DISABLED_STATE) {
     pumpDisabledTimeCounter++;
+  }
+}
+
+ISR(TIMER2_COMPA_vect)
+{
+  extractorFanOpenTimeCounter++;
+  if(extractorFanOpenTimeCounter >= EXTRACTOR_FAN_OPEN_TIME) {
+    stopExtractorFans();
+    extractorFanOpenTimeCounter = 0;
   }
 }
 
@@ -99,16 +94,6 @@ void switchOutPressed() {
     }
   }
   interrupts();
-}
-
-void goToPumpOpenState() {
-  startTimer();
-  currentState = PUMP_OPEN_STATE;
-}
-
-void goToPumpDisabledState() {
-  startTimer();
-  currentState = PUMP_DISABLED_STATE;
 }
 
 void pollConfiguration() {
