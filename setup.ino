@@ -27,8 +27,9 @@ void setup() {
   TCCR2B |= (1 << CS12);    // 256 prescaler
   interrupts();
 
-  Serial.begin(115200);
-  while (!Serial) {
-    ;
-  }
+//  Serial.begin(115200);
+//  while (!Serial) {
+//    ;
+//  }
+//  Serial.println("asdfasdfa");
 }
