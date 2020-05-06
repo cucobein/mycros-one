@@ -1,6 +1,5 @@
 void setup() {
   pinMode(PUMP, OUTPUT);
-  pinMode(LEDS, OUTPUT);
   pinMode(FANS, OUTPUT);
   pinMode(SWITCH_IN, INPUT_PULLUP);
   pinMode(SWITCH_OUT, INPUT_PULLUP);
@@ -9,7 +8,6 @@ void setup() {
   pinMode(SWITCH_IN_LED, OUTPUT);
   pinMode(SWITCH_OUT_LED, OUTPUT);
   digitalWrite(PUMP, LOW);
-  digitalWrite(LEDS, HIGH);
   digitalWrite(FANS, LOW);
   attachInterrupt(digitalPinToInterrupt(SWITCH_IN), switchInPressed, FALLING);
   attachInterrupt(digitalPinToInterrupt(SWITCH_OUT), switchOutPressed, FALLING);

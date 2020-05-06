@@ -1,6 +1,5 @@
 #define PUMP                      4
-#define LEDS                      5
-#define FANS                      10
+#define FANS                      5
 
 void startPumpTimer() {
   TCNT1  = 0;
@@ -19,14 +18,14 @@ void stopPumpTimer() {
 void startExtractorFans() {
   TCNT2  = 0;
   TIMSK2 |= (1 << OCIE1A);
-  pumpOpenTimeCounter = 0;
+  extractorFanOpenTimeCounter = 0;
   turnOnFans();
 }
 
 void stopExtractorFans() {
   TCNT2  = 0;
   TIMSK2 &= ~(1 << OCIE1A);
-  pumpOpenTimeCounter = 0;
+  extractorFanOpenTimeCounter = 0;
   turnOffFans();
 }
 
@@ -44,14 +43,12 @@ void goToPumpDisabledState() {
 void turnOnPump() {
   if (digitalRead(PUMP) != HIGH) {
     digitalWrite(PUMP, HIGH);
-    digitalWrite(LEDS, LOW);
   }
 }
 
 void turnOffPump() {
   if (digitalRead(PUMP) != LOW) {
     digitalWrite(PUMP, LOW);
-    digitalWrite(LEDS, HIGH);
   }
 }
 
