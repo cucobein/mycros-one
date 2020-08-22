@@ -41,25 +41,25 @@ void goToPumpDisabledState() {
 }
 
 void turnOnPump() {
-  if (digitalRead(PUMP) != HIGH) {
+  //if (digitalRead(PUMP) != HIGH) {
     digitalWrite(PUMP, HIGH);
-  }
+  //}
 }
 
 void turnOffPump() {
-  if (digitalRead(PUMP) != LOW) {
+  //if (digitalRead(PUMP) != LOW) {
     digitalWrite(PUMP, LOW);
-  }
+  //}
 }
 
 void turnOnFans() {
-  if (digitalRead(FANS) != HIGH) {
+  //if (digitalRead(FANS) != HIGH) {
     digitalWrite(FANS, HIGH);
-  }
+  //}
 }
 
 void turnOffFans() {
-  if (digitalRead(FANS) != LOW) {
+  //if (digitalRead(FANS) != LOW) {
     digitalWrite(FANS, LOW);
-  }
+  //}
 }
